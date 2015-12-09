@@ -24,6 +24,7 @@ $(BIN)/%.o: $(SRC)/%.c
 	mkdir -p $(@D)
 	$(CC) $(FLAGS) -c $^ -o $@
 
+.PHONY
 rebuild: clean all
 
 .PHONY: clean
