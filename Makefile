@@ -23,4 +23,4 @@ clean:
 
 .PHONY: run
 run: $(EXE)
-	$(EXE) $(ARGS)
+	@$(EXE) $(ARGS)
