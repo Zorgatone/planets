@@ -1,13 +1,20 @@
 NAME= planets
-BIN= bin
 SRC= src
-EXE:= $(BIN)/$(NAME)
-
-OBJS:= $(patsubst $(SRC)/%.c,$(BIN)/%.o,$(wildcard $(SRC)/**/*.c $(SRC)/*.c))
 
 WARNINGS= -Wall -Wextra -pedantic
-DEBUG= -O0 -DDEBUG -g3 -gdwarf-2
-FLAGS= -std=c11 $(WARNINGS) $(DEBUG)
+DEBUGFLAGS= -O0 -DDEBUG -g3 -gdwarf-2
+RELEASEFLAGS= -O3 -DNDEBUG
+
+ifeq ($(RELEASE),1)
+	FLAGS= -std=c11 $(RELEASEFLAGS)
+	BIN= bin/release
+else
+	FLAGS= -std=c11 $(WARNINGS) $(DEBUGFLAGS)
+	BIN= bin/debug
+endif
+
+EXE:= $(BIN)/$(NAME)
+OBJS:= $(patsubst $(SRC)/%.c,$(BIN)/%.o,$(wildcard $(SRC)/**/*.c $(SRC)/*.c))
 
 all: $(EXE)
 $(EXE): $(OBJS)
@@ -17,9 +24,12 @@ $(BIN)/%.o: $(SRC)/%.c
 	mkdir -p $(@D)
 	$(CC) $(FLAGS) -c $^ -o $@
 
+rebuild: clean all
+
 .PHONY: clean
 clean:
-	$(RM) $(EXE) $(BIN)/**/*.o $(BIN)/*.o
+	$(RM) bin/debug/$(NAME) bin/release/$(NAME)
+	$(RM) bin/release/**/*.o bin/debug/*.o
 
 .PHONY: run
 run: $(EXE)
