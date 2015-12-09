@@ -30,7 +30,8 @@ rebuild: clean all
 .PHONY: clean
 clean:
 	$(RM) bin/debug/$(NAME) bin/release/$(NAME)
-	$(RM) bin/release/**/*.o bin/debug/*.o
+	$(RM) bin/release/**/*.o bin/release/*.o
+	$(RM) bin/debug/**/*.o bin/debug/*.o
 
 .PHONY: run
 run: $(EXE)
